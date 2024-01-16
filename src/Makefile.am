@@ -29,6 +29,15 @@ libflexmalloc_dbg_la_CXXFLAGS  += -I$(MEMKIND_HOME)/include
 libflexmalloc_dbg_la_LDFLAGS   += -L$(MEMKIND_HOME)/lib -lmemkind -R $(MEMKIND_HOME)/lib -lnuma
 endif
 
+if HAVE_MPC
+libflexmalloc_la_SOURCES       += \
+ allocator-mpc-pmem.cxx allocator-mpc-pmem.hxx
+libflexmalloc_la_CXXFLAGS      += -I$(MPC_HOME)/include
+libflexmalloc_la_LDFLAGS       += -L$(MPC_HOME)/lib -lmpcalloc -R $(MPC_HOME)/lib
+libflexmalloc_dbg_la_CXXFLAGS  += -I$(MPC_HOME)/include
+libflexmalloc_dbg_la_LDFLAGS   += -L$(MPC_HOME)/lib -lmpcalloc -R $(MPC_HOME)/lib
+endif
+
 if HAVE_PAPI
 libflexmalloc_la_CXXFLAGS      += -DHWC -I$(PAPI_HOME)/include
 libflexmalloc_la_LDFLAGS       += -L$(PAPI_HOME)/lib -lpapi -R $(PAPI_HOME)/lib

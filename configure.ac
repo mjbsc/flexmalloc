@@ -86,6 +86,27 @@ if test x"{MEMKIND_SUPPORT}" = x"yes" ; then
 	fi
 fi
 
+AC_ARG_WITH([mpc],
+	[AS_HELP_STRING([--with-mpc=DIR],
+		[Support for MPC Allocator installed in DIR])],
+	[],
+	[with_mpc="no"])
+if test "${with_mpc}" != "no"; then
+	if test -r "${with_mpc}/lib/libmpcalloc.so" -o -r "${with_mpc}/lib/${multiarch_triplet}/libmpcalloc.so" ; then
+		if test -r "${with_mpc}/include/mpcalloc/sctk_alloc_pmem.h"; then
+			MPC_SUPPORT="yes"
+			AC_DEFINE([MPC_SUPPORTED], [1], [Defined if MPC Allocator is available])
+			MPC_HOME=${with_mpc}
+			AC_SUBST(MPC_HOME)
+		else
+			AC_MSG_FAILURE([Cannot find include/mpcalloc/sctk_alloc_pmem.h within given MPC Allocator DIR])
+		fi
+	else
+		AC_MSG_FAILURE([Cannot find libmpcalloc.so within given MPC Allocator DIR])
+	fi
+fi
+AM_CONDITIONAL(HAVE_MPC, test "${MPC_SUPPORT}" = "yes")
+
 AC_ARG_WITH([pmdk],
 	[AS_HELP_STRING([--with-pmdk=DIR],
 		[Support for PMDK installed in DIR])],

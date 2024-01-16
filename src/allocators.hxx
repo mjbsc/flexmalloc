@@ -10,10 +10,18 @@
 #include "allocator.hxx"
 
 #if defined(MEMKIND_SUPPORTED)
-# define NUM_ALLOCATORS 3
+# define NUM_MEMKIND_ALLOCATORS 2
 #else
-# define NUM_ALLOCATORS 1
+# define NUM_MEMKIND_ALLOCATORS 0
 #endif
+
+#if defined(MPC_SUPPORTED)
+# define NUM_MPC_ALLOCATORS 1
+#else
+# define NUM_MPC_ALLOCATORS 0
+#endif
+
+#define NUM_ALLOCATORS	(1 + NUM_MEMKIND_ALLOCATORS + NUM_MPC_ALLOCATORS)
 
 class Allocators
 {

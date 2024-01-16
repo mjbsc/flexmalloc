@@ -22,6 +22,9 @@
 # include "allocator-memkind-hbwmalloc.hxx"
 # include "allocator-memkind-pmem.hxx"
 #endif
+#if defined(MPC_SUPPORTED)
+# include "allocator-mpc-pmem.hxx"
+#endif
 
 Allocators::Allocators (allocation_functions_t &af, const char *definitions)
 {
@@ -31,6 +34,10 @@ Allocators::Allocators (allocation_functions_t &af, const char *definitions)
 	void *a_memkind_pmem = (AllocatorMemkindPMEM*) malloc (sizeof(AllocatorMemkindPMEM));
 	allocators[indx++] = new (a_memkind_hbwmalloc) AllocatorMemkindHBWMalloc(af);
 	allocators[indx++] = new (a_memkind_pmem) AllocatorMemkindPMEM(af);
+#endif
+#if defined(MPC_SUPPORTED)
+	void *a_mpc_pmem = (AllocatorMpcPMEM*) malloc (sizeof(AllocatorMpcPMEM));
+	allocators[indx++] = new (a_mpc_pmem) AllocatorMpcPMEM(af);
 #endif
 	void *a_posix = (AllocatorPOSIX*) malloc (sizeof(AllocatorPOSIX));
 	allocators[indx++] = new (a_posix) AllocatorPOSIX(af);
